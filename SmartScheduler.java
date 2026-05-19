@@ -41,4 +41,46 @@ public class SmartScheduler {
         heap.set(i, heap.get(j));
         heap.set(j, temp);
     }
+    public Task removeHighestPriority() {
+    if (heap.isEmpty()) {
+        return null;
+    }
+
+    Task highestPriority = heap.get(0);
+    Task lastTask = heap.remove(heap.size() - 1);
+
+    if (!heap.isEmpty()) {
+        heap.set(0, lastTask);
+        bubbleDown(0);
+    }
+
+    return highestPriority;
+}
+
+private void bubbleDown(int index) {
+    int size = heap.size();
+
+    while (true) {
+        int leftChild = 2 * index + 1;
+        int rightChild = 2 * index + 2;
+        int largest = index;
+
+        if (leftChild < size &&
+            heap.get(leftChild).getPriority() > heap.get(largest).getPriority()) {
+            largest = leftChild;
+        }
+
+        if (rightChild < size &&
+            heap.get(rightChild).getPriority() > heap.get(largest).getPriority()) {
+            largest = rightChild;
+        }
+
+        if (largest == index) {
+            break;
+        }
+
+        swap(index, largest);
+        index = largest;
+    }
+}
 }
